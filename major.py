@@ -1,29 +1,26 @@
 import streamlit as st
 
-# Define function to calculate BMI
-def calculate_bmi(height, weight):
-    bmi = weight / (height/100)**2
-    return round(bmi, 2)
+# Create a Streamlit app title
+st.title("BMI Calculator")
 
-# Define Streamlit app
-def app():
-    # Set page title and description
-    st.title("BMI Calculator")
-    st.write("Enter your details below to calculate your BMI.")
+# Create input fields for height and weight
+height_cm = st.number_input("Enter your height (in centimeters)")
+weight_kg = st.number_input("Enter your weight (in kilograms)")
 
-    # Define input fields
-    name = st.text_input("Name")
-    gender = st.radio("Gender", ("Male", "Female", "Other"))
-    age = st.number_input("Age", min_value=1, max_value=150, step=1)
-    address = st.text_area("Address")
-    hobbies = st.multiselect("Hobbies", ["Reading", "Sports", "Traveling", "Music"])
-    weight = st.number_input("Weight (in kg)", min_value=1, max_value=1000, step=1)
-    height = st.number_input("Height (in cm)", min_value=1, max_value=300, step=1)
+# Convert height from cm to meters
+height_m = height_cm / 100.0
 
-    # Calculate BMI and display result
-    if st.button("Calculate BMI"):
-        bmi = calculate_bmi(height, weight)
-        st.write(f"Hello {name}, your BMI is {bmi}.")
+# Calculate BMI
+if st.button("Calculate BMI"):
+    bmi = weight_kg / (height_m ** 2)
+    st.write(f"Your BMI is {bmi:.2f}")
 
-if __name__ == '__main__':
-    app()
+    # Interpret BMI
+    if bmi < 18.5:
+        st.write("You are underweight.")
+    elif 18.5 <= bmi < 24.9:
+        st.write("You have a normal weight.")
+    elif 25 <= bmi < 29.9:
+        st.write("You are overweight.")
+    else:
+        st.write("You are obese.")
